@@ -8,27 +8,41 @@ defmodule BankAccount do
 
   ## Examples
 
-      iex> BankAccount.open(1, 200)
+      iex> BankAccount.open()
       {:ok, 1}
 
   """
-  @spec open(pos_integer()) :: {:ok, pos_integer()} | {:error, String.t()}
-  def open(_id) do
+  @spec open() :: {:ok, pos_integer()} | {:error, String.t()}
+  def open() do
     {:ok, 1}
   end
 
   @doc """
-  Deletes an account
+  Deletes an account returning id and remaining balance
 
   ## Examples
 
       iex> BankAccount.delete(1)
-      {:ok, 1}
+      {:ok, 1, 1000}
 
   """
   @spec delete(pos_integer()) :: :ok | {:error, String.t()}
   def delete(_id) do
     :ok
+  end
+
+  @doc """
+  Get balance for an account
+
+  ## Examples
+
+      iex> BankAccount.balance()
+      {:ok, 1000}
+
+  """
+  @spec balance(pos_integer()) :: {:ok, pos_integer()} | {:error, String.t()}
+  def balance(_id) do
+    {:ok, 1000}
   end
 
   @doc """
@@ -61,7 +75,7 @@ defmodule BankAccount do
 
   @doc """
   Transfer money from one account to another.
-  When money is available return the new balance
+  When money is available return the new balances(sender, receiver)
 
   ## Examples
 
@@ -69,7 +83,7 @@ defmodule BankAccount do
       {:ok, 900}
 
   """
-  @spec transfer(pos_integer(), pos_integer(), pos_integer()) :: {:ok, pos_integer()} | {:error, String.t()}
+  @spec transfer(pos_integer(), pos_integer(), pos_integer()) :: {:ok, pos_integer(), pos_integer()} | {:error, String.t()}
   def transfer(_sender_id, _receiver_id, _amount) do
     {:ok, 900}
   end

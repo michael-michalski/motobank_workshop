@@ -1,3 +1,8 @@
 # Motorola Solutions University Workshop
+Contrary to normal bank accounts.
 
-Implement the bank account problem with a strict focus on performance.
+Judging criteria
+
+* Best benchmark
+* Testing for atomicity and isolation
+* For this exercise persistence is not a goal
