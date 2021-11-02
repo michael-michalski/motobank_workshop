@@ -1,6 +1,4 @@
 # Motorola Solutions University Workshop
-Contrary to normal bank accounts.
-
 Judging criteria
 
 * Best benchmark
