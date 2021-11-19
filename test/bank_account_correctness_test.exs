@@ -46,5 +46,4 @@ defmodule BankAccountCorrectnessTest do
     assert {:ok, 300} = BankAccount.balance(id)
     assert {:ok, ^id, 300} = BankAccount.delete(id)
   end
-
 end
