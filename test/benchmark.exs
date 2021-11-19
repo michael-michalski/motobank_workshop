@@ -1,49 +1,43 @@
-defmodule BankAccountCorrectnessTest do
+defmodule BankAccountBenchmarkTest do
   use ExUnit.Case
 
-  test "open delete relationship" do
-    {:ok, id} = BankAccount.open()
-    assert {:ok, ^id, 0} = BankAccount.delete(id)
-  end
+  @num_accounts 10_000
+  @runtime_per_test 2
 
-  test "Withdraw deposit" do
-    {:ok, id} = BankAccount.open()
-    assert {:ok, 300} = BankAccount.deposit(id, 300)
-    assert {:ok, 100} = BankAccount.withdraw(id, 200)
-    assert {:error, _} = BankAccount.withdraw(id, 300)
-    assert {:ok, ^id, 100} = BankAccount.delete(id)
-  end
+  @tag timeout: :infinity
+  test "benchmarks" do
+    accounts =
+      Enum.reduce(0..@num_accounts, %{}, fn id, acc ->
+        {:ok, account_id} = BankAccount.open()
+        Map.put(acc, id, account_id)
+      end)
 
-  test "negative is not allowed" do
-    {:ok, id} = BankAccount.open()
-    assert {:ok, 300} = BankAccount.deposit(id, 300)
-    assert {:error, _} = BankAccount.deposit(id, -300)
-    assert {:error, _} = BankAccount.withdraw(id, -200)
+    Benchee.run(
+      %{
+        "read test" => fn -> BankAccount.balance(:rand.uniform(@num_accounts)) end
+      },
+      time: @runtime_per_test
+    )
 
-    {:ok, id2} = BankAccount.open()
-    assert {:error, _} = BankAccount.transfer(id, id2, -200)
+    Benchee.run(
+      %{
+        "deposit test" => fn ->
+          account_id = Map.get(accounts, :rand.uniform(@num_accounts))
+          BankAccount.deposit(account_id, 1)
+        end
+      },
+      time: @runtime_per_test
+    )
 
-    assert {:ok, ^id, 300} = BankAccount.delete(id)
-    assert {:ok, ^id2, 0} = BankAccount.delete(id2)
-  end
-
-  test "transfer money" do
-    {:ok, id} = BankAccount.open()
-    assert {:ok, 300} = BankAccount.deposit(id, 300)
-
-    {:ok, id2} = BankAccount.open()
-    assert {:ok, 500} = BankAccount.deposit(id2, 500)
-    assert {:ok, 100, 700} = BankAccount.transfer(id, id2, 200)
-
-    assert {:ok, ^id, 100} = BankAccount.delete(id)
-    assert {:ok, ^id2, 700} = BankAccount.delete(id2)
-  end
-
-  test "check balance" do
-    {:ok, id} = BankAccount.open()
-    assert {:ok, 0} = BankAccount.balance(id)
-    assert {:ok, 300} = BankAccount.deposit(id, 300)
-    assert {:ok, 300} = BankAccount.balance(id)
-    assert {:ok, ^id, 300} = BankAccount.delete(id)
+    Benchee.run(
+      %{
+        "transfer test" => fn ->
+          receiver_id = Map.get(accounts, :rand.uniform(@num_accounts))
+          sender_id = Map.get(accounts, :rand.uniform(@num_accounts))
+          BankAccount.transfer(receiver_id, sender_id, 1)
+        end
+      },
+      time: @runtime_per_test
+    )
   end
 end
