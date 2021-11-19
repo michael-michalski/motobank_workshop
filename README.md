@@ -8,3 +8,11 @@ Judging criteria
 * Testing for atomicity and isolation
 * For this exercise persistence is not a goal
 * Bonus: store history
+
+## Unit tests
+
+mix test test/bank_account_correctness_test.exs
+
+## Benchmarks
+
+mix test test/benchmark.exs
