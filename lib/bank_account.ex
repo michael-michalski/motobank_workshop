@@ -76,15 +76,31 @@ defmodule BankAccount do
   @doc """
   Transfer money from one account to another.
   When money is available return the new balances(sender, receiver)
+  It is allowed to transfer money to yourself
 
   ## Examples
 
-      iex> BankAccount.transer(1, 3, 100)
-      {:ok, 900}
+      iex> BankAccount.transfer(1, 3, 100)
+      {:ok, 900, 100}
 
   """
-  @spec transfer(pos_integer(), pos_integer(), pos_integer()) :: {:ok, pos_integer(), pos_integer()} | {:error, String.t()}
+  @spec transfer(pos_integer(), pos_integer(), pos_integer()) ::
+          {:ok, pos_integer(), pos_integer()} | {:error, String.t()}
   def transfer(_sender_id, _receiver_id, _amount) do
     {:ok, 900}
+  end
+
+  @doc """
+  OPTIONAL: Retrieve the history of transactions for the account
+
+  ## Examples
+
+      iex> BankAccount.history(1)
+      {:ok, []}
+
+  """
+  @spec history(pos_integer()) :: {:ok, list(any)} | {:error, String.t()}
+  def history(_id) do
+    []
   end
 end
