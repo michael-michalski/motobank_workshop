@@ -7,3 +7,4 @@ Judging criteria
 * Best benchmark
 * Testing for atomicity and isolation
 * For this exercise persistence is not a goal
+* Bonus: store history
