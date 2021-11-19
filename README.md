@@ -1,4 +1,7 @@
 # Motorola Solutions University Workshop
+
+Implement the functionality of the file lib/bank_account.ex
+
 Judging criteria
 
 * Best benchmark
